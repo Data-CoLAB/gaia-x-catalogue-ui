@@ -4,7 +4,7 @@ const ROUTES_CONST = {
   ROOT: VITE_BASE_PATH,
   CATALOGUE: '',
   SO_DETAILS: 'so-details',
-  STREAMLIT: "streamlit"
+  STREAMLIT: STREAMLIT_PATH,
 }
 
 export { ROUTES_CONST }
