@@ -1,0 +1,13 @@
+@import '@wizard/styles/abstracts/abstracts';
+
+.container {
+  background-color: $gray5;
+  
+  .formContainer {
+    background-color: $white;
+  }
+}
+
+.dialogSubtitle {
+  color: $purple;
+}

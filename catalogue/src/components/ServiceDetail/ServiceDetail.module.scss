@@ -1,0 +1,56 @@
+@import '@catalogue/styles/abstracts/abstracts';
+
+.serviceDetailCard {
+  &__Title {
+    color: $mediumGreen;
+  }
+  &__Label {
+    color: $black;
+    line-height: 2.2rem; /* 122.222% */
+  }
+  &__SubLabel {
+    color: $black;
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 2.2rem; /* 137.5% */
+  }
+  &__Description {
+    color: $gray1;
+    line-height: 2.2rem; /* 137.5% */
+  }
+  &__Value {
+    color: $gray1;
+    font-size: 1.8rem;
+    font-weight: 400;
+    line-height: 2.2rem; /* 122.222% */
+
+    &__Location {
+      color: $gray1;
+      line-height: 2.2rem;
+    }
+  }
+  &__Hyperlink {
+    color: $green;
+    font-size: 1.8rem;
+    font-weight: 400;
+    line-height: 2.2rem; /* 122.222% */
+    cursor: pointer;
+  }
+  &__Circle {
+    background-color: $gray4;
+    color: $gray1;
+  }
+}
+
+.icon {
+  color: $yellow;
+  .MuiSvgIcon-root,
+  * {
+    font-size: 2rem !important;
+  }
+}
+
+.dividerLine {
+  background: $gray3;
+  height: 0.1rem;
+}

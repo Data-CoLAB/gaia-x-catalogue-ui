@@ -1,0 +1,36 @@
+# Use an official Node.js runtime as a parent image
+FROM node:18-alpine AS build
+
+ARG ENVIRONMENT
+ENV NODE_OPTIONS=--max_old_space_size=4096
+
+WORKDIR /gaia-x-frontend
+
+ENV PATH /gaia-x-frontend/node_modules/.bin:$PATH
+
+COPY .yarn ./.yarn
+COPY .yarnrc.yml ./.yarnrc.yml
+COPY package.json .
+COPY yarn.lock ./
+COPY ./catalogue/package.json ./catalogue/package.json
+COPY ./components-lib/package.json ./components-lib/package.json
+
+RUN yarn
+
+COPY catalogue ./catalogue
+COPY components-lib ./components-lib
+
+RUN yarn build:components-lib
+RUN yarn build:catalogue:${ENVIRONMENT}
+
+FROM nginxinc/nginx-unprivileged:1.21.6-alpine
+
+COPY --from=build /gaia-x-frontend/catalogue/dist/ /usr/share/nginx/port8080
+
+ARG ENVIRONMENT
+COPY ./${ENVIRONMENT}.conf /etc/nginx/conf.d/default.conf
+
+
+EXPOSE 8080
+
+CMD ["nginx", "-g", "daemon off;"]

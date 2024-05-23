@@ -1,0 +1,42 @@
+@import '@catalogue/styles/abstracts/abstracts';
+.serviceListingPage {
+  height: 100%;
+  background-color: rgba(235, 235, 235, 0.3411764706);
+
+  .mainContainer {
+    height: calc(100% - 18rem);
+    margin: 0 auto;
+
+    .descriptionContent {
+      background: $white;
+      box-shadow: 0rem 0.2rem 0.7rem 0rem rgba(0, 0, 0, 0.15);
+      border: 0.05rem solid $gray3;
+      min-width: 40rem;
+      border-radius: 1rem;
+    }
+  }
+}
+
+.dataNotFound {
+  color: $gray1;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 800px) {
+  .serviceListingPage .mainContainer {
+    .mainContent {
+      padding-bottom: calc(34vh - 16px);
+    }
+    .descriptionContent {
+      position: absolute;
+      width: 94%;
+      height: 34vh;
+      bottom: 0;
+      left: 3%;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      min-width: 0;
+    }
+  }
+}

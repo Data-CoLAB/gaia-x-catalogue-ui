@@ -1,0 +1,84 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: techx-react-2024-fe
+  labels:
+    app: techx-react-2024-fe
+spec:
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      partition: 0
+  replicas: 1
+  serviceName: techx-react-2024-fe
+  selector:
+    matchLabels:
+      app: techx-react-2024-fe
+      external-lb: public-lb-01
+  template:
+    metadata:
+      labels:
+        app: techx-react-2024-fe
+        external-lb: public-lb-01
+      # annotations:
+      #   configHash: "${CONFIG_HASH}"
+    spec:
+      containers:
+        - name: techx-react-2024-fe
+          image: 057114403371.dkr.ecr.eu-west-1.amazonaws.com/dev:techx-react-2024-fe-0.0.1
+          # use this to override the java -jar
+          # command: ["/bin/bash"]
+          # args: ["-c", "while true; do echo hello; sleep 10; done"]
+          imagePullPolicy: Always
+          # resources:
+          #   limits:
+          #     memory: 1024Mi
+          #   requests:
+          #     memory: 256Mi
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          # readinessProbe:
+          #   httpGet:
+          #     scheme: HTTP
+          #     path: /nbi/health
+          #     port: 8080
+          #   initialDelaySeconds: 10
+          #   periodSeconds: 5
+          # volumeMounts:
+          # - name: persistent-data
+          #   mountPath: /destination/nbi
+          #   subPath: source/nbi
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+          # env:
+          #   - name: quarkus.datasource.password
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: database-secrets
+          #         key: DATABASE_ORACLE_TEST_PASSWORD
+          # - name: CI_JOB_ID
+          #   value: "${CI_JOB_ID}"
+          envFrom:
+            - configMapRef:
+                name: techx-react-2024-fe-config
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      # volumes:
+      # - name: persistent-data
+      #   persistentVolumeClaim:
+      #     claimName: persistent-data-pvc
+      #     readOnly: false
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodegroup
+                operator: In
+                values:
+                - misc

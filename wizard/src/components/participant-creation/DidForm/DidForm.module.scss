@@ -1,0 +1,7 @@
+@import '@wizard/styles/abstracts/abstracts';
+
+.container {
+  &__Message {
+    color: $darkGreen;
+  }
+}

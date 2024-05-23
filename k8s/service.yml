@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: techx-react-2024-fe-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: techx-react-2024-fe
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000

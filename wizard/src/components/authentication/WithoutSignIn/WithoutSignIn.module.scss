@@ -1,0 +1,13 @@
+@import '@wizard/styles/abstracts/abstracts';
+
+.WithoutSignInContainer {
+  background: $white;
+ 
+  h2 {
+    color: $black;
+  }
+
+  p {
+    color: $black;
+  }
+}

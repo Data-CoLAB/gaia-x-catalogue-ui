@@ -1,0 +1,11 @@
+@import '@wizard/styles/abstracts/abstracts';
+
+.serviceESignContainer {
+  h3 {
+    color: $black;
+  }
+
+  &__form {
+    border: 1px solid $gray3;
+  }
+}

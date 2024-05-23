@@ -1,0 +1,15 @@
+{
+  "cSpell.words": [
+    "Keycloak",
+    "keypair",
+    "pageable",
+    "tailwindcss",
+    "tanstack",
+    "uploadname"
+  ],
+  "editor.formatOnSave": true,
+  "sonarlint.connectedMode.project": {
+    "connectionId": "https-sonar-the-sense-io-",
+    "projectKey": "gaia-x-frontend"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "@gaia-x-frontend/monorepo",
+  "packageManager": "yarn@3.5.1",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "wizard",
+    "catalogue",
+    "components-lib"
+  ],
+  "scripts": {
+    "start:wizard": "yarn workspace @gaia-x-frontend/wizard dev",
+    "build:wizard:development": "yarn workspace @gaia-x-frontend/wizard build:development",
+    "build:wizard:production": "yarn workspace @gaia-x-frontend/wizard build:production",
+    "start:catalogue": "yarn workspace @gaia-x-frontend/catalogue dev",
+    "build:catalogue:development": "yarn workspace @gaia-x-frontend/catalogue build:development",
+    "build:catalogue:production": "yarn workspace @gaia-x-frontend/catalogue build:production",
+    "build:components-lib": "yarn workspace @gaia-x-frontend/components-lib build:lib",
+    "start:storybook": "yarn workspace @gaia-x-frontend/components-lib storybook",
+    "build:storybook": "yarn workspace @gaia-x-frontend/components-lib build-storybook",
+    "prettier:format": "npx prettier --write .",
+    "lint-staged": "lint-staged",
+    "postinstall": "husky install"
+  },
+  "devDependencies": {
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.2",
+    "prettier": "^3.0.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "yarn lint-staged --fix",
+    "*.{ts,tsx,scss,md}": "prettier --write"
+  }
+}

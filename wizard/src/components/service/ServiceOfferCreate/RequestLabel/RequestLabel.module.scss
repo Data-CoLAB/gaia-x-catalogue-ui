@@ -1,0 +1,9 @@
+@import '@wizard/styles/abstracts/abstracts';
+
+.LLContainer {
+  iframe {
+    height: calc(100vh - 32rem);
+    width: 108%;
+    margin-left: -11.5rem;
+  }
+}

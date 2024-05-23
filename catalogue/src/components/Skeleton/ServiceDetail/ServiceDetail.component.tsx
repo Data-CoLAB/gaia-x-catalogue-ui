@@ -1,0 +1,80 @@
+import { Skeleton } from '@gaia-x-frontend/components-lib'
+const ServiceDetail = () => {
+  return (
+    <div className={'px-[3.2rem] py-[2.4rem] h-[74rem] overflow-hidden'}>
+      <div className=" h-[74rem] overflow-hidden">
+        <Skeleton
+          height={`7rem`}
+          width={`40rem`}
+          animation="wave"
+          variant="rounded"
+          className="mb-[1.4rem]"
+        />
+        <Skeleton
+          variant="rounded"
+          height={`3rem`}
+          width={`13.4rem`}
+          animation="wave"
+          className="mb-[1.4rem]"
+        />
+        <Skeleton
+          variant="rounded"
+          height={`20rem`}
+          width={`40rem`}
+          className="mb-[4rem]"
+        />
+        <Skeleton
+          variant="rounded"
+          height={`2.4rem`}
+          width={`12.6rem`}
+          animation="wave"
+          className="mb-[1.2rem]"
+        />
+        <Skeleton
+          variant="rounded"
+          height={`2.4rem`}
+          width={`40rem`}
+          animation="wave"
+          className="mb-[1.1rem]"
+        />
+        <Skeleton
+          variant="rounded"
+          height={`2.4rem`}
+          width={`40rem`}
+          animation="wave"
+          className="mb-[4rem]"
+        />
+        <Skeleton
+          variant="rounded"
+          height={`2.4rem`}
+          width={`12.6rem`}
+          animation="wave"
+          className="mb-[1.2rem]"
+        />
+        <Skeleton
+          variant="rounded"
+          height={`7rem`}
+          width={`40rem`}
+          animation="wave"
+          className="mb-[1.2rem]"
+        />
+        <Skeleton
+          variant="rounded"
+          height={`2.4rem`}
+          width={`12.6rem`}
+          animation="wave"
+          className="mb-[1.2rem]"
+        />
+        <Skeleton
+          variant="rounded"
+          height={`7rem`}
+          width={`40rem`}
+          animation="wave"
+          className="mb-[1.2rem]"
+        />
+      </div>
+    </div>
+  )
+}
+
+export { ServiceDetail }

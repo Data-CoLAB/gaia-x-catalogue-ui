@@ -1,0 +1,21 @@
+@import '@wizard/styles/abstracts/abstracts';
+
+.SignInContainer {
+  background: $white;
+
+  h2 {
+    color: $black;
+  }
+
+  p.Content {
+    color: $black;
+  }
+
+  .RegisterLink {
+    color: $black;
+ 
+    a {
+      color: $mediumGreen;
+    }
+  }
+}

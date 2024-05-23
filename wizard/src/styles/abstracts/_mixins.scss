@@ -1,0 +1,47 @@
+@mixin LayoutContainer() {
+  width: 100rem;
+  margin: 0 auto;
+}
+
+@mixin LayoutSmallContainer() {
+  width: 70rem;
+  margin: 0 auto;
+}
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+/*placeholder*/
+
+@mixin placeholder($color, $size) {
+  input::-webkit-input-placeholder,
+  textarea::-webkit-input-placeholder {
+    color: $color !important;
+    vertical-align: middle !important;
+    font-size: $size !important;
+  }
+  input::-moz-placeholder,
+  textarea::-moz-placeholder {
+    color: $color !important;
+    opacity: 1 !important;
+    vertical-align: middle !important;
+    font-size: $size !important;
+  }
+  input:-ms-input-placeholder,
+  textarea:-ms-input-placeholder {
+    color: $color !important;
+    opacity: 1 !important;
+    vertical-align: middle !important;
+    font-size: $size !important;
+  }
+  input:placeholder,
+  textarea:placeholder {
+    color: $color !important;
+    vertical-align: middle !important;
+    font-size: $size !important;
+  }
+}

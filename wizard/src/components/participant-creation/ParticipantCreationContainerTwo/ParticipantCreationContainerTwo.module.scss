@@ -1,0 +1,26 @@
+@import '@wizard/styles/abstracts/abstracts';
+
+.container {
+  /*change the image and the position once image is received*/
+  background: url('./../../../../public/dashed-line.png') no-repeat;
+  background-position: 100% 60%;
+  min-height: 100vh;
+
+  &__Content {
+    &__Title {
+      white-space: pre-line;
+      color: $green;
+    }
+    &__Box {
+      height: fit-content;
+    }
+  }
+  &__Footer {
+    background: linear-gradient(
+      275.39deg,
+      $turquoise -5.01%,
+      $green 52.92%,
+      $purple 110.85%
+    );
+  }
+}

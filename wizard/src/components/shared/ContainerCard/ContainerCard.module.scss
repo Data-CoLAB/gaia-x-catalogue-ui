@@ -1,0 +1,20 @@
+@import '@wizard/styles/abstracts/abstracts';
+
+.container {
+  &__Header {
+    background:
+      url('./../../../../public/header-line.png') no-repeat,
+      linear-gradient(311deg, $green 0%, $green 58.67%, $purple 100%);
+    background-position:
+      100% 0%,
+      0% 0%;
+
+    &__Title {
+      color: $white;
+    }
+  }
+  &__Children {
+    background: $white;
+    box-shadow: 0rem 0.2rem 0.8rem 0rem rgba(0, 0, 0, 0.15);
+  }
+}

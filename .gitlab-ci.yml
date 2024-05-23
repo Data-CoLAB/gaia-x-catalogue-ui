@@ -1,0 +1,98 @@
+stages:
+  - build
+  - release
+  - deploy
+
+build:
+  image: docker:19.03.12
+  services:
+    - docker:19.03.12-dind
+  stage: build
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_MESSAGE =~ /^chore\(release\):/
+      when: never
+    - if: $CI_COMMIT_BRANCH == "main" && $CI_COMMIT_MESSAGE =~ /^chore\(release\):/
+      when: never
+    - if: $CI_COMMIT_BRANCH
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "development" ]]; then
+        export BUILD_ENV="development"
+      else 
+        export BUILD_ENV="production"
+      fi
+    - docker build -f Dockerfile.catalogue --pull --build-arg ENVIRONMENT=$BUILD_ENV -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+deploy-on-lab:
+  image: ubuntu
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_MESSAGE =~ /^chore\(release\):/
+      when: never
+    - if: $CI_COMMIT_BRANCH == "main" && $CI_COMMIT_MESSAGE =~ /^chore\(release\):/
+      when: never
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "development"
+  before_script:
+    - apt update && apt install -y curl
+    - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+  script:
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "development" ]]; then
+        export CATALOGUE_ENV="development" 
+      else 
+        export CATALOGUE_ENV="production"
+      fi
+    - helm upgrade --install -n "$CI_COMMIT_REF_SLUG" --create-namespace gx-catalogue-ui ./k8s/gx-catalogue-ui --set "nameOverride=$CI_COMMIT_REF_SLUG,ingress.hosts[0].host=catalogue.lab.gaia-x.eu,ingress.hosts[0].paths[0].path=/$CI_COMMIT_REF_SLUG,image.tag=$CI_COMMIT_REF_SLUG,ingress.hosts[0].paths[0].pathType=Prefix,CATALOGUE_ENV=$CATALOGUE_ENV" --kubeconfig "$GXDCH_KUBECONFIG"
+
+make-release:
+  image: node:18
+  stage: release
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" && $CI_COMMIT_MESSAGE =~ /^chore\(release\):/
+      when: never
+    - if: $CI_COMMIT_BRANCH == "main"
+  before_script:
+    - apt-get update -y && apt-get install -yqqf openssh-client git unzip sshpass rsync --fix-missing
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+    - eval $(ssh-agent -s)
+    - echo "$CI_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+
+    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+
+    - git config --global user.email "cto@gaia-x.eu"
+    - git config --global user.name "semantic-release-bot"
+  script:
+    - npm i
+    - ./node_modules/.bin/semantic-release
+
+build-tag:
+  image: docker:19.03.12
+  services:
+    - docker:19.03.12-dind
+  stage: build
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build --pull -f Dockerfile.catalogue --build-arg ENVIRONMENT=production -t $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+  only:
+    - tags
+
+deploy-tag-on-lab:
+  image: ubuntu
+  stage: deploy
+  when: manual
+  before_script:
+    - apt update && apt install -y curl
+    - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+  script:
+    - helm upgrade --install -n default --create-namespace gx-catalogue-ui ./k8s/gx-catalogue-ui --set "ingress.hosts[0].host=catalogue.lab.gaia-x.eu,ingress.hosts[0].paths[0].path=/,image.tag=$CI_COMMIT_TAG,ingress.hosts[0].paths[0].pathType=Prefix,CATALOGUE_ENV=production" --kubeconfig "$GXDCH_KUBECONFIG"
+  only:
+    - tags

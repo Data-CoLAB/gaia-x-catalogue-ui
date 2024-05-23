@@ -1,0 +1,32 @@
+@import '@wizard/styles/abstracts/abstracts';
+
+.container {
+  margin: auto 1.6rem;
+  border: 0.5px solid $gray3;
+  background: $white;
+
+  .title {
+    color: $mediumGreen;
+  }
+
+  .subtitle {
+    color: $black;
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 2.2rem;
+  }
+  .textDetails {
+    color: $gray1;
+    overflow-wrap: break-word;
+  }
+  .levelText {
+    color: $black;
+  }
+  .link {
+    color: $green;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "*.tsx": [
+    "eslint --report-unused-disable-directives --max-warnings 0",
+    "eslint --fix",
+    "prettier --write"
+  ],
+  "*.ts": [
+    "eslint --report-unused-disable-directives --max-warnings 0",
+    "eslint --fix",
+    "prettier --write"
+  ]
+}

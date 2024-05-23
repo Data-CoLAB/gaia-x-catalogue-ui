@@ -1,0 +1,10 @@
+@import '@catalogue/styles/abstracts/abstracts';
+
+.sortBar {
+  &__Title {
+    color: $green;
+  }
+  &__SubTitle {
+    color: $gray1;
+  }
+}

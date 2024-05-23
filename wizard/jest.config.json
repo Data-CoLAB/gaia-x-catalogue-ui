@@ -1,0 +1,11 @@
+{
+  "collectCoverageFrom": ["**/*.{ts,tsx}", "!**/node_modules/**"],
+  "coverageReporters": ["html", ["text", { "skipFull": true }]],
+  "globals": {
+    "__DEV__": true
+  },
+  "transform": {
+    "^.+\\.(ts|tsx|js|jsx)$": "ts-jest"
+  },
+  "testEnvironment": "jsdom"
+}

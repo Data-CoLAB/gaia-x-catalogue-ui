@@ -1,0 +1,28 @@
+@import '@wizard/styles/abstracts/abstracts';
+
+.LoginContainer {
+  background: linear-gradient(311deg, $turquoise 0%, $green 50%, $purple 100%);
+ 
+  img {
+    top: -3rem;
+
+    @media screen and (min-width: 1200px) and (max-width: 1460px) {
+      top: 0rem;
+    }
+  }
+
+  &::after {
+    content: '';
+    background-image: url('./../../../../public/auth-line.png');
+    background-size: contain;
+    width: 100%;
+    position: absolute;
+    background-repeat: no-repeat;
+    height: 41.7rem;
+    bottom: 0;
+  }
+
+  .AuthScreen {
+    min-height: 69rem;
+  }
+}
