@@ -36,19 +36,19 @@ function Owner() {
             d="M11.2694 12C13.4923 12 15.2942 10.3211 15.2942 8.25C15.2942 6.17893 13.4923 4.5 11.2694 4.5C9.04659 4.5 7.24463 6.17893 7.24463 8.25C7.24463 10.3211 9.04659 12 11.2694 12Z"
             stroke="url(#paint0_linear_1_53)"
             stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinejoin="round"
           />
           <path
             d="M4.39508 17.8499C5.11349 16.7512 6.12318 15.8431 7.32708 15.213C8.53098 14.5829 9.8886 14.252 11.2694 14.252C12.6503 14.252 14.0079 14.5829 15.2118 15.213C16.4157 15.8431 17.4254 16.7512 18.1438 17.8499"
             stroke="url(#paint1_linear_1_53)"
             stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinejoin="round"
           />
           <path
             d="M11.2694 20.25C17.0488 20.25 21.7339 15.8848 21.7339 10.5C21.7339 5.11522 17.0488 0.75 11.2694 0.75C5.49004 0.75 0.804932 5.11522 0.804932 10.5C0.804932 15.8848 5.49004 20.25 11.2694 20.25Z"
             stroke="url(#paint2_linear_1_53)"
             stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinejoin="round"
           />
         </g>
       </g>

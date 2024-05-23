@@ -20,13 +20,13 @@ export enum ApiStatus {
 }
 
 export const API = {
-  postServiceList: {
+  getServiceList: {
     Method: HttpMethod.Post,
     URL: `/gaiax/catalogue/search`,
   },
-  getServiceList: {
+  getTagsList: {
     Method: HttpMethod.Get,
-    URL: `/gaiax/catalogue`,
+    URL: `/gaiax/catalogue/tags`,
   },
   getServiceDetail: {
     Method: HttpMethod.Get,

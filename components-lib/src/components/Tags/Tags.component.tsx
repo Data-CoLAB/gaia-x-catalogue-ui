@@ -1,8 +1,13 @@
 import { useState } from 'react'
 import { TabsProps, Tag, TagContainer } from './Tags.styled'
 
+export interface Tags {
+  value: string
+  count: number
+}
+
 export type CustomTagsProps = TabsProps & {
-  items: { value: string; count: number }[]
+  items: Tags[]
   onClickTag: (param: string) => void
 }
 

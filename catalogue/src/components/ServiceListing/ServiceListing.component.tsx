@@ -2,12 +2,14 @@
 import {
   getServiceDetailAPI,
   getServiceListAPI,
+  getTagsListAPI,
 } from '@catalogue/api/catalogue.api'
 import {
   Content,
   Query,
   ServiceDetail,
   ServiceListRequest,
+  Tags,
 } from '@catalogue/models/Catalogue.model'
 import { SortOrderHelper } from '@catalogue/utility/helper'
 import {
@@ -27,79 +29,186 @@ import {
 import { SortBar } from '../SortBar'
 import ServiceListingStyle from './ServiceListing.module.scss'
 
-const ServiceListing = () => {
-  const [data, setData] = useState<Content[]>([
-    {
-      id: 'content1',
-      credentialSubjectId: 'subject1',
-      name: 'Sample Content 1',
-      dataAccountExport: {
-        id: 'export1',
-        createdDate: 1627847382,
-        accessType: 'read-only',
-        requestType: 'API',
-        formatType: ['JSON', 'XML'],
+/** MOCKS */
+const mockData = [
+  {
+    id: 'content1',
+    credentialSubjectId: 'subject1',
+    name: 'Sample Content 1',
+    dataAccountExport: {
+      id: 'export1',
+      createdDate: 1627847382,
+      accessType: 'read-only',
+      requestType: 'API',
+      formatType: ['JSON', 'XML'],
+    },
+    protectionRegime: [
+      {
+        id: 'regime1',
+        name: 'GDPR',
+        createdDate: 1597847382,
       },
-      protectionRegime: [
-        {
-          id: 'regime1',
-          name: 'GDPR',
-          createdDate: 1597847382,
-        },
-        {
-          id: 'regime2',
-          name: 'CCPA',
-          createdDate: 1607847382,
-        },
-      ],
-      providedBy: 'Provider A',
-      locations: [
-        {
-          // Assuming Location structure
-          id: 'loc1',
-          name: 'Server A',
-          createdDate: 2022,
-        },
-      ],
-      veracity: 95,
-      transparency: 90,
-      trustIndex: 92,
-      labelLevel: 'High',
+      {
+        id: 'regime2',
+        name: 'CCPA',
+        createdDate: 1607847382,
+      },
+    ],
+    providedBy: 'Provider A',
+    locations: [
+      {
+        // Assuming Location structure
+        id: 'loc1',
+        name: 'Server A',
+        createdDate: 2022,
+      },
+    ],
+    veracity: 95,
+    transparency: 90,
+    trustIndex: 92,
+    labelLevel: 'High',
+  },
+  {
+    id: 'content2',
+    credentialSubjectId: 'subject2',
+    name: 'Sample Content 2',
+    dataAccountExport: {
+      id: 'export2',
+      createdDate: 1627848393,
+      accessType: 'full-access',
+      requestType: 'Manual',
+      formatType: ['CSV'],
+    },
+    protectionRegime: [
+      {
+        id: 'regime3',
+        name: 'HIPAA',
+        createdDate: 1617847382,
+      },
+    ],
+    providedBy: 'Provider B',
+    locations: [
+      {
+        // Assuming Location structure
+        id: 'loc2',
+        name: 'Server B',
+        createdDate: 2022,
+      },
+    ],
+    veracity: 88,
+    transparency: 85,
+    trustIndex: 87,
+    labelLevel: 'Medium',
+  },
+]
+const mockDescription = {
+  id: 'service1',
+  description: 'This is a sample service description.',
+  credentialSubjectId: 'subject1',
+  name: 'Sample Service',
+  labelLevel: 'High',
+  protectionRegime: [
+    {
+      id: 'regime1',
+      name: 'GDPR',
+      createdDate: 1597847382,
     },
     {
-      id: 'content2',
+      id: 'regime2',
+      name: 'CCPA',
+      createdDate: 1607847382,
+    },
+  ],
+  locations: [
+    {
+      // Assumindo a estrutura da interface Location
+      id: 'loc1',
+      name: 'Data Center A',
+      createdDate: 2022,
+    },
+    {
+      id: 'loc2',
+      name: 'Data Center B',
+      createdDate: 2022,
+    },
+  ],
+  dependedServices: [
+    {
+      id: 'service2',
+      name: 'Dependent Service 1',
       credentialSubjectId: 'subject2',
-      name: 'Sample Content 2',
-      dataAccountExport: {
-        id: 'export2',
-        createdDate: 1627848393,
-        accessType: 'full-access',
-        requestType: 'Manual',
-        formatType: ['CSV'],
-      },
-      protectionRegime: [
-        {
-          id: 'regime3',
-          name: 'HIPAA',
-          createdDate: 1617847382,
-        },
-      ],
-      providedBy: 'Provider B',
-      locations: [
-        {
-          // Assuming Location structure
-          id: 'loc2',
-          name: 'Server B',
-          createdDate: 2022,
-        },
-      ],
-      veracity: 88,
-      transparency: 85,
-      trustIndex: 87,
-      labelLevel: 'Medium',
     },
-  ])
+    {
+      id: 'service3',
+      name: 'Dependent Service 2',
+      credentialSubjectId: 'subject3',
+    },
+  ],
+  resources: [
+    {
+      id: 'resource1',
+      name: 'Resource 1',
+      credentialSubjectId: 'subject4',
+    },
+    {
+      id: 'resource2',
+      name: 'Resource 2',
+      credentialSubjectId: 'subject5',
+    },
+  ],
+  veracity: 95,
+  transparency: 90,
+  trustIndex: 92,
+  dataAccountExport: {
+    id: 'export1',
+    createdDate: 1627847382,
+    accessType: 'read-only',
+    requestType: 'API',
+    formatType: ['JSON', 'XML'],
+  },
+  tnCUrl: 'https://example.com/terms-and-conditions',
+  participant: {
+    id: 'participant1',
+    name: 'Participant A',
+    credentialSubjectId: 'subject6',
+  },
+}
+const mockTags = [
+  {
+    count: 38,
+    value: 'JavaScript',
+  },
+  {
+    count: 30,
+    value: 'React',
+  },
+  {
+    count: 28,
+    value: 'Nodejs',
+  },
+  {
+    count: 25,
+    value: 'Express.js',
+  },
+  {
+    count: 33,
+    value: 'HTML5',
+  },
+  {
+    count: 18,
+    value: 'MongoDB',
+  },
+  {
+    count: 20,
+    value: 'CSS3',
+  },
+]
+
+const ServiceListing = () => {
+  const [data, setData] = useState<Content[]>(mockData)
   const [page, setPage] = useState<number>(0)
+  const [tags, setTags] = useState<Tags[]>(mockTags)
+  const [selectedTag, setSelectedTag] = useState<string>()
   const [maxPage, setMaxPage] = useState<number>(1)
   const [description, setDescription] = useState<ServiceDetail>()
   const [totalRecords, setTotalRecords] = useState<number>()
@@ -129,11 +238,16 @@ const ServiceListing = () => {
     if (!description && data.length > 0) {
       getServiceDetail(data[0].id)
     }
+    getTagsList()
   }, [data, description])
 
   useEffect(() => {
     getServiceList()
   }, [sortOrder, query])
+
+  useEffect(() => {
+    console.log(selectedTag)
+  }, [selectedTag])
 
   const onSortChange = (value: number) => {
     setData([])
@@ -188,6 +302,17 @@ const ServiceListing = () => {
       })
   }
 
+  const getTagsList = () => {
+    getTagsListAPI()
+      .then((res: Tags[]) => {
+        setTags(res)
+      })
+      .catch(() => {
+        setLoadingList(false)
+        setLoadingDetails(false)
+      })
+  }
+
   const loadMore = useCallback(() => {
     setPage((prePage) => prePage + 1)
   }, [])
@@ -232,38 +357,9 @@ const ServiceListing = () => {
       >
         <CustomTags
           style={{ borderBottom: 24 }}
-          items={[
-            {
-              count: 38,
-              value: 'JavaScript',
-            },
-            {
-              count: 30,
-              value: 'React',
-            },
-            {
-              count: 28,
-              value: 'Nodejs',
-            },
-            {
-              count: 25,
-              value: 'Express.js',
-            },
-            {
-              count: 33,
-              value: 'HTML5',
-            },
-            {
-              count: 18,
-              value: 'MongoDB',
-            },
-            {
-              count: 20,
-              value: 'CSS3',
-            },
-          ]}
+          items={tags}
           onClickTag={(e: string) => {
-            console.log(e)
+            setSelectedTag(e)
           }}
         ></CustomTags>
       </div>
@@ -317,80 +413,10 @@ const ServiceListing = () => {
                     onClick={() => {
                       setLoadingDetails(true)
                       getServiceDetail(data.id)
-
+                      //MOCK DO DELETE
+                      setActiveCard(data.id)
                       setLoadingDetails(false)
-                      setDescription({
-                        id: 'service1',
-                        description: 'This is a sample service description.',
-                        credentialSubjectId: 'subject1',
-                        name: 'Sample Service',
-                        labelLevel: 'High',
-                        protectionRegime: [
-                          {
-                            id: 'regime1',
-                            name: 'GDPR',
-                            createdDate: 1597847382,
-                          },
-                          {
-                            id: 'regime2',
-                            name: 'CCPA',
-                            createdDate: 1607847382,
-                          },
-                        ],
-                        locations: [
-                          {
-                            // Assumindo a estrutura da interface Location
-                            id: 'loc1',
-                            name: 'Data Center A',
-                            createdDate: 2022,
-                          },
-                          {
-                            id: 'loc2',
-                            name: 'Data Center B',
-                            createdDate: 2022,
-                          },
-                        ],
-                        dependedServices: [
-                          {
-                            id: 'service2',
-                            name: 'Dependent Service 1',
-                            credentialSubjectId: 'subject2',
-                          },
-                          {
-                            id: 'service3',
-                            name: 'Dependent Service 2',
-                            credentialSubjectId: 'subject3',
-                          },
-                        ],
-                        resources: [
-                          {
-                            id: 'resource1',
-                            name: 'Resource 1',
-                            credentialSubjectId: 'subject4',
-                          },
-                          {
-                            id: 'resource2',
-                            name: 'Resource 2',
-                            credentialSubjectId: 'subject5',
-                          },
-                        ],
-                        veracity: 95,
-                        transparency: 90,
-                        trustIndex: 92,
-                        dataAccountExport: {
-                          id: 'export1',
-                          createdDate: 1627847382,
-                          accessType: 'read-only',
-                          requestType: 'API',
-                          formatType: ['JSON', 'XML'],
-                        },
-                        tnCUrl: 'https://example.com/terms-and-conditions',
-                        participant: {
-                          id: 'participant1',
-                          name: 'Participant A',
-                          credentialSubjectId: 'subject6',
-                        },
-                      })
+                      setDescription(mockDescription)
                     }}
                   >
                     <CatalogueCard

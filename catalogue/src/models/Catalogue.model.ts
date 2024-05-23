@@ -123,3 +123,8 @@ export interface DataAccountExport {
   requestType: string
   formatType: string[]
 }
+
+export interface Tags {
+  value: string
+  count: number
+}
